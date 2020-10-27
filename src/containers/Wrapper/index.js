@@ -1,14 +1,16 @@
 import React from 'react';
-import {Row,Col } from 'antd'
+import {Row,Col } from 'antd';
+import Header from './../../components/Header'
+import FooterP from './../../components/Footer';
 
 
 const Wrapper =({children})=>{
     return(
-           <Row justify="center" style={{height:380,marginTop:70}}>
-               <Col span={7} style={{backgroundColor:"#1890ff",borderRadius:5}}>
+        <>
+            <Header />
                    {children}
-               </Col>
-           </Row>
+           <FooterP />
+        </>
     )
 }
 

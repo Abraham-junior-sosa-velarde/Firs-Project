@@ -1,4 +1,4 @@
-import { Form, Input,Button,Row,Col,Typography,Checkbox} from 'antd'
+import { Form, Input,Button,Row,Col,Typography} from 'antd'
 const { Title } = Typography;
 import React, { useState,useEffect }  from 'react';
 import Link from 'next/link'
@@ -9,7 +9,8 @@ const Login=()=>{
     const [state,setState]=useState({
         correo:"",
         contraseña:"",
-        total:""
+        total:"",
+        display:"none"
     })
     const handleInputChange=(e)=>{
         setState({
@@ -20,45 +21,59 @@ const Login=()=>{
     const datos=(e)=>{
         setState({
             ...state,
-            total:`No se pudo iniciar sesion con ${state.correo}-${state.contraseña}`
+            total:`No se pudo iniciar sesion con ${state.correo}-${state.contraseña}`,
+            display:"block"
         })
     }
+    useEffect(()=>{
+        setTimeout(() => {
+         setState({
+             ...state,
+             display:"none"
+         })
+        }, 2000);
+        console.log("hola")
+ },[state.total])
     return(
-        <Form className="login-form">
+        <div style={{backgroundColor:"#F1F1F1",display:"flex",justifyContent:"center",paddingBottom:"5rem"}}>
+        <div style={{backgroundColor:"#1890ff",marginTop:60,width:440,height:380,borderRadius:7,boxShadow:"1px 1px 3px"}}>
+        <Form className="login-form" onSubmitCapture={datos}>
             <Row justify="center" style={{paddingTop:40}}>
             <Col span="18" style={{textAlign:"center"}}>
             <Form.Item>
-                <Title level={3}>Iniciar Sesion</Title>
+                <Title level={3} style={{color:"#EFEFEF",fontWeight:"900"}}>Iniciar Sesion</Title>
             </Form.Item>
             </Col>
-            <Col span="20">
+            <Col span="18">
                 <Form.Item name="Correo">
-                <Input placeholder="Correo Electronico" name="correo" onChange={handleInputChange}/>
+                <Input placeholder="Correo Electronico" name="correo" onChange={handleInputChange} required/>
                 </Form.Item>
             </Col>
-            <Col span="20">
+            <Col span="18">
                 <Form.Item name="password">
-                <Input type="password" placeholder="Contraseña" name="contraseña" onChange={handleInputChange}/>
+                <Input type="password" placeholder="Contraseña" name="contraseña" onChange={handleInputChange} required/>
                 </Form.Item>
             </Col>
             <Col span="18">
                 <Form.Item name="remember" valuePropName="checked" noStyle>
-                <Checkbox>Guardar Usuario</Checkbox>
+                <Link href="/recordar-contrasena"><label style={{color:"white",fontSize:"1.2rem"}}>Olvidaste tu contraseña?</label></Link>
                 </Form.Item>
             </Col>
             <Col span="18">
                 <Form.Item>
-                <Button block onClick={datos} >Iniciar Sesion</Button >
+                <Button block htmlType="submit" style={{backgroundColor:"#EBEBEB"}}>Iniciar sesion</Button>
                  </Form.Item>
             </Col>
             <Col span="18">
                 <Form.Item>
-               <Link href="http://localhost:3000/register"><Button block>Registrarse</Button></Link>
+               <Link href="/register"><Button block  style={{backgroundColor:"#EBEBEB"}}>Registrarse</Button></Link>
                 </Form.Item>
             </Col>
             </Row>
-            <Alert message={state.total} type="error" />
+            <Alert message={state.total} style={{display:state.display}} type="error" />
       </Form>
+      </div>
+      </div>
     )
 }
 export default Login
