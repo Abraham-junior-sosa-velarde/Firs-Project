@@ -3,9 +3,35 @@ const { Title } = Typography;
 import React, { useState,useEffect }  from 'react';
 import Link from 'next/link'
 import { Alert } from 'antd';
+import {useDispatch,useSelector} from "react-redux";
+import { UPDATE_USERS_STATES_START } from '../../redux/constants/Login'
 
 
-const Login=()=>{
+const actionUpdateLogin=({username,password})=>({
+    type:UPDATE_USERS_STATES_START,
+    payload:{
+        username,
+        password,
+    },
+});
+export const ReduxStore=()=>{
+    const {username,password}=useSelector((store)=>store);
+    const dispatch=useDispatch();
+
+    const datos=()=>{
+    dispatch({type:UPDATE_USERS_STATES_START,payload:{username,password}})
+    }
+
+    const handleInputChange=(e)=>{
+   dispatch(actionUpdateLogin(
+       {        
+        [e.target.name]:e.target.value
+       }
+   ))
+    }
+
+
+/*const Login=()=>{
     const [state,setState]=useState({
         correo:"",
         contraseña:"",
@@ -33,7 +59,7 @@ const Login=()=>{
          })
         }, 2000);
         console.log("hola")
- },[state.total])
+ },[state.total])*/
     return(
         <div style={{backgroundColor:"#F1F1F1",display:"flex",justifyContent:"center",paddingBottom:"5rem"}}>
         <div style={{backgroundColor:"#1890ff",marginTop:60,width:440,height:380,borderRadius:7,boxShadow:"1px 1px 3px"}}>
@@ -46,12 +72,12 @@ const Login=()=>{
             </Col>
             <Col span="18">
                 <Form.Item name="Correo">
-                <Input placeholder="Correo Electronico" name="correo" onChange={handleInputChange} required/>
+                <Input placeholder="Correo Electronico" name="username" onChange={handleInputChange} required/>
                 </Form.Item>
             </Col>
             <Col span="18">
                 <Form.Item name="password">
-                <Input type="password" placeholder="Contraseña" name="contraseña" onChange={handleInputChange} required/>
+                <Input type="password" placeholder="Contraseña" name="password" onChange={handleInputChange} required/>
                 </Form.Item>
             </Col>
             <Col span="18">
@@ -70,10 +96,10 @@ const Login=()=>{
                 </Form.Item>
             </Col>
             </Row>
-            <Alert message={state.total} style={{display:state.display}} type="error" />
+         <Alert /* message={state.total} style={{display:state.display}}*/ type="error" />
       </Form>
       </div>
       </div>
     )
 }
-export default Login
+export default ReduxStore
